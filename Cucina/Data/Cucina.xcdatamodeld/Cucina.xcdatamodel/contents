@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24D81" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FamilyEntity" representedClassName="FamilyEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="code" attributeType="String"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="members" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="family" inverseEntity="UserEntity"/>
+    </entity>
+    <entity name="IngredientEntity" representedClassName="IngredientEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="unit" attributeType="String"/>
+        <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="ingredients" inverseEntity="RecipeEntity"/>
+    </entity>
+    <entity name="PollEntity" representedClassName="PollEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="createdBy" attributeType="String"/>
+        <attribute name="desc" attributeType="String"/>
+        <attribute name="endsAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="status" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+        <relationship name="options" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollOptionEntity" inverseName="poll" inverseEntity="PollOptionEntity"/>
+        <relationship name="voters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="votes" inverseEntity="UserEntity"/>
+    </entity>
+    <entity name="PollOptionEntity" representedClassName="PollOptionEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="recipeId" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="votes" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="poll" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PollEntity" inverseName="options" inverseEntity="PollEntity"/>
+    </entity>
+    <entity name="RecipeEntity" representedClassName="RecipeEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="category" attributeType="String"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="createdBy" attributeType="String"/>
+        <attribute name="desc" attributeType="String"/>
+        <attribute name="difficulty" attributeType="String"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="imageURL" optional="YES" attributeType="String"/>
+        <attribute name="instructions" attributeType="Binary"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="servings" attributeType="Integer 16" defaultValueString="4" usesScalarValueType="YES"/>
+        <attribute name="tags" attributeType="Binary"/>
+        <attribute name="votes" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="favoritedBy" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="favoriteRecipes" inverseEntity="UserEntity"/>
+        <relationship name="ingredients" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="IngredientEntity" inverseName="recipe" inverseEntity="IngredientEntity"/>
+    </entity>
+    <entity name="UserEntity" representedClassName="UserEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="email" attributeType="String"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="imageData" optional="YES" attributeType="Binary"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="preferences" attributeType="Binary"/>
+        <relationship name="family" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FamilyEntity" inverseName="members" inverseEntity="FamilyEntity"/>
+        <relationship name="favoriteRecipes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="favoritedBy" inverseEntity="RecipeEntity"/>
+        <relationship name="votes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollEntity" inverseName="voters" inverseEntity="PollEntity"/>
+    </entity>
+</model>
